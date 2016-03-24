@@ -7,6 +7,7 @@ jar {
     baseName = 'checkthat'
     version = '0.0.1-SNAPSHOT'
 }
+
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 mainClassName = "checkthat.Application"
@@ -20,6 +21,10 @@ dependencies {
     compile 'org.apache.httpcomponents:httpclient:4.+'
 
     testCompile 'org.springframework.boot:spring-boot-starter-test'
+}
+
+task cleanAll {
+    cleanAll.dependsOn clean, cleanIdea, cleanIdeaWorkspace
 }
 
 task wrapper(type: Wrapper) {
