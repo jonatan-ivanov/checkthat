@@ -26,6 +26,10 @@ dependencies {
 task cleanAll {
     cleanAll.dependsOn clean, cleanIdea, cleanIdeaWorkspace
 }
+cleanAll << {
+    delete 'out'
+}
+
 
 task wrapper(type: Wrapper) {
     gradleVersion = '2.12'
