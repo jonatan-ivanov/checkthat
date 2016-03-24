@@ -16,11 +16,15 @@ class UrlChecker implements Function<String,HttpResponse> {
 
     @Override
     HttpResponse apply(String url) {
-        if (url.startsWith("http")) {
+        if (isSupported(url)) {
             return httpInvoker.invoke(url);
         }
         else {
             throw new IllegalArgumentException("Only HTTP or HTTPS are supported");
         }
+    }
+
+    private boolean isSupported(String url) {
+        return url.startsWith("http");
     }
 }
