@@ -9,14 +9,15 @@ Currently HTTP and HTTPS are the supported protocols.
 `gradlew assemble`
 
 #How to use it
-##Run through gradle
+##Run with gradle
 1. Build and start: `./gradlew run`
-2. Open it in your browser: [http://localhost:8080/checkthat/?url=https://github.com](http://localhost:8080/checkthat/?url=https://github.com)
+2. In your browser: [http://localhost:8080/checkthat/?url=https://github.com](http://localhost:8080/checkthat/?url=https://github.com)
 
 ##Build and run it
 1. Build: `gradlew installDist`
 2. Navigate into app dir: `cd build/install/checkthat`
-2. Start: `bin/checkthat`
+3. Start: `bin/checkthat`
+4. In your browser: [http://localhost:8080/checkthat/?url=https://github.com](http://localhost:8080/checkthat/?url=https://github.com)
 
 ##Specify port
 `bin/checkthat --port=9000`

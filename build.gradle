@@ -31,7 +31,6 @@ cleanAll << {
     delete 'out'
 }
 
-
 task wrapper(type: Wrapper) {
     gradleVersion = '2.12'
 }
@@ -41,6 +40,6 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath('org.springframework.boot:spring-boot-gradle-plugin:1.3.3.RELEASE')
+        classpath('org.springframework.boot:spring-boot-gradle-plugin:1.+')
     }
 }
