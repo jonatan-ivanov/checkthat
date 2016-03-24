@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.ResponseBody
 
 import java.util.function.Function
 
+/**
+ * @author Jonatan Ivanov
+ */
 @Controller
 class CheckerController {
     @Autowired private Function<String,HttpResponse> urlChecker;
