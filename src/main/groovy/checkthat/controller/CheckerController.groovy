@@ -1,6 +1,7 @@
 package checkthat.controller
 
 import checkthat.url.http.HttpResponse
+import org.apache.commons.lang3.exception.ExceptionUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.ExceptionHandler
@@ -23,7 +24,13 @@ class CheckerController {
     }
 
     @ExceptionHandler(Throwable.class)
-    @ResponseBody String handleError(Throwable error) {
-        return error;
+    @ResponseBody ErrorDetails handleError(Throwable error) {
+        Throwable rootCause = ExceptionUtils.getRootCause(error);
+        return new ErrorDetails(
+                errorMessage: error?.getMessage(),
+                errorClass: error?.getClass(),
+                rootCauseMessage: rootCause?.getMessage(),
+                rootCauseClass: rootCause?.getClass()
+        );
     }
 }
