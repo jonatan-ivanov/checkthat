@@ -10,7 +10,7 @@ Currently HTTP and HTTPS are the supported protocols.
 
 #How to use it
 ##Run with gradle
-1. Build and start: `./gradlew run`
+1. Build and start: `./gradlew bootRun`
 2. In your browser: [http://localhost:8080/checkthat?url=https://github.com](http://localhost:8080/checkthat?url=https://github.com) and/or [http://localhost:8080/checkthat?server=github.com](http://localhost:8080/checkthat?server=github.com)
 
 ##Build and run it
@@ -20,4 +20,7 @@ Currently HTTP and HTTPS are the supported protocols.
 4. In your browser: [http://localhost:8080/checkthat?url=https://github.com](http://localhost:8080/checkthat?url=https://github.com) and/or [http://localhost:8080/checkthat?server=github.com](http://localhost:8080/checkthat?server=github.com)
 
 ##Specify port
-`bin/checkthat --port=9000`
+```
+./gradlew -Dport=9000
+bin/checkthat --port=9000
+```
