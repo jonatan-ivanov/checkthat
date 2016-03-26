@@ -11,12 +11,13 @@ Currently HTTP and HTTPS are the supported protocols.
 #How to use it
 ##Run with gradle
 1. Build and start: `./gradlew run`
-2. In your browser: [http://localhost:8080/checkthat?url=https://github.com](http://localhost:8080/checkthat?url=https://github.com) [http://localhost:8080/checkthat?server=github.com](http://localhost:8080/checkthat?server=github.com)
+2. In your browser: [http://localhost:8080/checkthat?url=https://github.com](http://localhost:8080/checkthat?url=https://github.com) and/or [http://localhost:8080/checkthat?server=github.com](http://localhost:8080/checkthat?server=github.com)
 
 ##Build and run it
 1. Build: `gradlew installDist`
 2. Navigate into app dir: `cd build/install/checkthat`
 3. Start: `bin/checkthat`
-4. In your browser: [http://localhost:8080/checkthat?url=https://github.com](http://localhost:8080/checkthat?url=https://github.com) [http://localhost:8080/checkthat?server=github.com](http://localhost:8080/checkthat?server=github.com)
+4. In your browser: [http://localhost:8080/checkthat?url=https://github.com](http://localhost:8080/checkthat?url=https://github.com) and/or [http://localhost:8080/checkthat?server=github.com](http://localhost:8080/checkthat?server=github.com)
+
 ##Specify port
 `bin/checkthat --port=9000`
