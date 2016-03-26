@@ -1,8 +1,8 @@
 package checkthat
 
+import checkthat.url.http.AlwaysTrustStrategy
 import org.apache.http.client.config.RequestConfig
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory
-import org.apache.http.conn.ssl.TrustSelfSignedStrategy
 import org.apache.http.impl.client.CloseableHttpClient
 import org.apache.http.impl.client.HttpClients
 import org.apache.http.ssl.SSLContexts
@@ -37,9 +37,9 @@ class Application {
                 .build();
     }
 
-    private SSLConnectionSocketFactory createSSLConnectionSocketFactory() {
+    private static SSLConnectionSocketFactory createSSLConnectionSocketFactory() {
         SSLContext sslContext = SSLContexts.custom()
-                .loadTrustMaterial(null, new TrustSelfSignedStrategy())
+                .loadTrustMaterial(null, new AlwaysTrustStrategy())
                 .build();
 
         return new SSLConnectionSocketFactory(sslContext, SSLConnectionSocketFactory.getDefaultHostnameVerifier());
