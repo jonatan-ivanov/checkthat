@@ -33,14 +33,14 @@ class PingChecker implements Function<String,PingResult> {
 
     private static String createCommand(String osName, String host) {
         if (osName.startsWith("Windows")) {
-            return "ping -n 1 " + host;
+            return "ping -n 1 $host";
         }
         else {
-            return "ping -c 1 " + host;
+            return "ping -c 1 $host";
         }
     }
 
     private static boolean seemsValidHost(String host) {
-        return host ==~ "[a-zA-Z0-9\\.:-]+"
+        return host ==~ "[a-zA-Z0-9\\.:-]+" //almost :)
     }
 }
