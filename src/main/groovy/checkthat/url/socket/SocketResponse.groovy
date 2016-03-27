@@ -1,4 +1,4 @@
-package checkthat.url.http
+package checkthat.url.socket
 
 import checkthat.url.UrlResponse
 import groovy.transform.Immutable
@@ -9,7 +9,8 @@ import groovy.transform.ToString
  */
 @ToString(includeNames = true)
 @Immutable
-class HttpResponse implements UrlResponse {
-    int statusCode;
-    String statusMessage;
+class SocketResponse implements UrlResponse {
+    String host;
+    int port;
+    boolean connected;
 }

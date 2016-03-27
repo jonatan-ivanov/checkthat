@@ -1,15 +1,21 @@
 package checkthat.controller
 
 import checkthat.ping.PingResult
-import checkthat.url.http.HttpResponse
+import checkthat.url.UrlResponse
+import checkthat.url.socket.SocketResponse
+import checkthat.util.PortRangeFactory
 import org.apache.commons.lang3.exception.ExceptionUtils
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.ExceptionHandler
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseBody
 
+import java.util.function.BiFunction
 import java.util.function.Function
 
 /**
@@ -17,37 +23,32 @@ import java.util.function.Function
  */
 @Controller
 class CheckerController {
-    @Autowired private Function<String,HttpResponse> urlChecker;
-    @Autowired private Function<String,PingResult> pingChecker;
+    private static final Logger LOGGER = LoggerFactory.getLogger(CheckerController.class);
 
-    @RequestMapping(path = "/")
-    @ResponseBody def check(
-            @RequestParam(required = false) String url,
-            @RequestParam(required = false) String server) {
-        if (url != null) {
-            return urlChecker.apply(url);
-        }
-        else if (server != null) {
-            return pingChecker.apply(server);
-        }
-        else {
-            throw new IllegalArgumentException("You need to specify either the url to invoke or the server to ping");
-        }
-    }
+    @Autowired private Function<String, UrlResponse> urlChecker;
+    @Autowired private Function<String, PingResult> pingChecker;
+    @Autowired private BiFunction<String, Range<Integer>, List<SocketResponse>> multiSocketChecker;
 
     @RequestMapping(path = "/url")
-    @ResponseBody PingResult checkUrl(@RequestParam String url) {
+    @ResponseBody UrlResponse checkUrl(@RequestParam String url) {
         return urlChecker.apply(url);
     }
 
-    @RequestMapping(path = "/server")
-    @ResponseBody PingResult checkServer(@RequestParam String server) {
-        return pingChecker.apply(server)
+    @RequestMapping(path = "/server/{server:.+}")
+    @ResponseBody PingResult checkServer(@PathVariable String server) {
+        return pingChecker.apply(server);
+    }
+
+    @RequestMapping(path = "/socket/{host}:{portRange:.+}")
+    @ResponseBody List<SocketResponse> checkPorts(@PathVariable String host, @PathVariable String portRange) {
+        return multiSocketChecker.apply(host, PortRangeFactory.createRange(portRange));
     }
 
     @ExceptionHandler(Throwable.class)
     @ResponseBody ErrorDetails handleError(Throwable error) {
+        LOGGER.error(error.getMessage(), error);
         Throwable rootCause = ExceptionUtils.getRootCause(error);
+
         return new ErrorDetails(
                 errorMessage: error?.getMessage(),
                 errorClass: error?.getClass(),

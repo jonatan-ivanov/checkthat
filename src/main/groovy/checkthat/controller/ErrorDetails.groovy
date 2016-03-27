@@ -9,8 +9,8 @@ import groovy.transform.ToString
 @ToString(includeNames = true)
 @Immutable
 class ErrorDetails {
-    String errorMessage;
     Class errorClass;
-    String rootCauseMessage;
+    String errorMessage;
     Class rootCauseClass;
+    String rootCauseMessage;
 }

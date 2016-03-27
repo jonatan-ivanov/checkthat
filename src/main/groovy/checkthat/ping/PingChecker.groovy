@@ -10,7 +10,7 @@ import java.util.function.Function
  * @author Jonatan Ivanov
  */
 @Component
-class PingChecker implements Function<String,PingResult> {
+class PingChecker implements Function<String, PingResult> {
     private static final Logger LOGGER = LoggerFactory.getLogger(PingChecker.class);
 
     @Override
@@ -41,6 +41,6 @@ class PingChecker implements Function<String,PingResult> {
     }
 
     private static boolean seemsValidHost(String host) {
-        return host ==~ "[a-zA-Z0-9\\.:-]+" //almost :)
+        return host ==~ "[a-zA-Z0-9\\.:-]+"; //almost :)
     }
 }
