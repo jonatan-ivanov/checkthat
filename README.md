@@ -5,7 +5,7 @@ Collection of checkers to test servers/services/etc. through Web API packed in a
 * JDK 8
 
 #How to build it
-`gradlew assemble`
+`gradlew build`
 
 #How to use it
 ##Run with gradle
@@ -30,3 +30,13 @@ Collection of checkers to test servers/services/etc. through Web API packed in a
 ./gradlew bootRun -Dport=9000
 bin/checkthat --port=9000
 ```
+
+#Deploy
+create dist: `./gradlew installDist`  
+run: `./build/install/checkthat/bin/checkthat`
+
+or
+
+create dist: `./gradlew installDist`  
+unpack `.tar` or `.zip` from `build/distributions` to your target dir  
+run: `bin/checkthat`
