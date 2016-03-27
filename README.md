@@ -11,16 +11,23 @@ Currently HTTP and HTTPS are the supported protocols.
 #How to use it
 ##Run with gradle
 1. Build and start: `./gradlew bootRun`
-2. In your browser: [http://localhost:8080/checkthat?url=https://github.com](http://localhost:8080/checkthat?url=https://github.com) and/or [http://localhost:8080/checkthat?server=github.com](http://localhost:8080/checkthat?server=github.com)
+2. Open your browser: [Check Examples](#API Examples)
 
 ##Build and run it
 1. Build: `gradlew installDist`
 2. Navigate into app dir: `cd build/install/checkthat`
 3. Start: `bin/checkthat`
-4. In your browser: [http://localhost:8080/checkthat?url=https://github.com](http://localhost:8080/checkthat?url=https://github.com) and/or [http://localhost:8080/checkthat?server=github.com](http://localhost:8080/checkthat?server=github.com)
+4. Open your browser: [Check Examples](#API Examples)
+
+##API Examples
+- Check http(s) endpoint: [http://localhost:8080/checkthat/url/https://github.com](http://localhost:8080/checkthat/url/https://github.com)
+- Check open port: [http://localhost:8080/checkthat/url/socket://github.com:80](http://localhost:8080/checkthat/url/socket://github.com:80)
+- Check host by ping: [http://localhost:8080/checkthat/server/github.com](http://localhost:8080/checkthat/server/github.com)
+- Check open ports (only one port): [http://localhost:8080/checkthat/socket/github.com:80](http://localhost:8080/checkthat/socket/github.com:80)
+- Check open ports (multiple ports): [http://localhost:8080/checkthat/socket/github.com:80..82](http://localhost:8080/checkthat/socket/github.com:80..82)
 
 ##Specify port
 ```
-./gradlew -Dport=9000
+./gradlew bootRun -Dport=9000
 bin/checkthat --port=9000
 ```
