@@ -9,10 +9,13 @@ import org.apache.http.ssl.SSLContexts
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.context.embedded.FilterRegistrationBean
 import org.springframework.context.annotation.Bean
 import org.springframework.core.env.Environment
+import org.tuckey.web.filters.urlrewrite.UrlRewriteFilter
 
 import javax.net.ssl.SSLContext
+import javax.servlet.DispatcherType
 
 /**
  * @author Jonatan Ivanov
@@ -43,6 +46,16 @@ class Application {
                 .build();
 
         return new SSLConnectionSocketFactory(sslContext, SSLConnectionSocketFactory.getDefaultHostnameVerifier());
+    }
+
+    @Bean
+    public FilterRegistrationBean filterRegistrationBean() {
+        FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
+        filterRegistrationBean.setFilter(new UrlRewriteFilter());
+        filterRegistrationBean.addUrlPatterns("/*");
+        filterRegistrationBean.setDispatcherTypes(DispatcherType.REQUEST, DispatcherType.FORWARD);
+
+        return filterRegistrationBean;
     }
 
     static void main(String[] args) {
