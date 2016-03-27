@@ -1,4 +1,4 @@
-package checkthat.controller
+package checkthat.error
 
 import groovy.transform.Immutable
 import groovy.transform.ToString
@@ -11,6 +11,8 @@ import groovy.transform.ToString
 class ErrorDetails {
     Class errorClass;
     String errorMessage;
+    Class causeClass;
+    String causeMessage;
     Class rootCauseClass;
     String rootCauseMessage;
 }

@@ -1,5 +1,6 @@
 package checkthat.url.http
 
+import checkthat.error.CheckerException
 import org.apache.http.StatusLine
 import org.apache.http.client.methods.CloseableHttpResponse
 import org.apache.http.client.methods.HttpGet
@@ -24,12 +25,17 @@ class HttpInvoker {
         try {
             response = httpClient.execute(new HttpGet(url));
             StatusLine status = response.getStatusLine();
+            LOGGER.info("Successfully invoked $url");
+
             return new HttpResponse(
                     url: url,
                     method: "GET",
                     statusCode: status?.getStatusCode(),
                     statusMessage: status?.getReasonPhrase()
             );
+        }
+        catch (Exception e) {
+            throw new CheckerException("Error occured while invoking $url", e);
         }
         finally {
             response?.close();

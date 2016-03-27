@@ -1,5 +1,6 @@
 package checkthat.controller
 
+import checkthat.error.ErrorDetails
 import checkthat.ping.PingResult
 import checkthat.url.UrlResponse
 import checkthat.url.socket.SocketResponse
@@ -47,11 +48,14 @@ class CheckerController {
     @ExceptionHandler(Throwable.class)
     @ResponseBody ErrorDetails handleError(Throwable error) {
         LOGGER.error(error.getMessage(), error);
+        Throwable cause = error?.cause;
         Throwable rootCause = ExceptionUtils.getRootCause(error);
 
         return new ErrorDetails(
                 errorMessage: error?.getMessage(),
                 errorClass: error?.getClass(),
+                causeClass: cause?.getClass(),
+                causeMessage: cause?.getMessage(),
                 rootCauseMessage: rootCause?.getMessage(),
                 rootCauseClass: rootCause?.getClass()
         );
