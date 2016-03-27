@@ -28,6 +28,7 @@ class CheckerController {
 
     @Autowired private Function<String, UrlResponse> urlChecker;
     @Autowired private Function<String, PingResult> pingChecker;
+    @Autowired private BiFunction<String, Integer, SocketResponse> socketChecker;
     @Autowired private BiFunction<String, Range<Integer>, List<SocketResponse>> multiSocketChecker;
 
     @RequestMapping(path = "/url")
@@ -40,7 +41,12 @@ class CheckerController {
         return pingChecker.apply(server);
     }
 
-    @RequestMapping(path = "/socket/{host}:{portRange:.+}")
+    @RequestMapping(path = "/socket/{host}:{port:.+}")
+    @ResponseBody SocketResponse checkPort(@PathVariable String host, @PathVariable Integer port) {
+        return socketChecker.apply(host, port);
+    }
+
+    @RequestMapping(path = "/sockets/{host}:{portRange:.+}")
     @ResponseBody List<SocketResponse> checkPorts(@PathVariable String host, @PathVariable String portRange) {
         return multiSocketChecker.apply(host, PortRangeFactory.createRange(portRange));
     }
