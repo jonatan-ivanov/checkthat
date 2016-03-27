@@ -33,6 +33,10 @@ run {
     systemProperties = System.properties
 }
 
+task stage {
+  dependsOn installDist
+}
+
 task cleanAll {
     cleanAll.dependsOn clean, cleanIdea, cleanIdeaWorkspace
 }
