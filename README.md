@@ -1,5 +1,5 @@
 #What's this?
-Collection of checkers to test servers/services/etc. through Web API packed in a standalone jar. [Check Examples](#api-examples)
+Collection of checkers to test servers/services/etc. through Web API packed in a standalone jar. [Check Examples](#examples)
 
 #Requirements
 * JDK 8
@@ -10,15 +10,15 @@ Collection of checkers to test servers/services/etc. through Web API packed in a
 #How to use it
 ##Run with gradle
 1. Build and start: `./gradlew bootRun`
-2. Open your browser: [Check Examples](#api-examples)
+2. Open your browser: [Check Examples](#examples)
 
 ##Build and run it
 1. Build: `gradlew installDist`
 2. Navigate into app dir: `cd build/install/checkthat`
 3. Start: `bin/checkthat`
-4. Open your browser: [Check Examples](#api-examples)
+4. Open your browser: [Check Examples](#examples)
 
-##API Examples
+#Examples
 - Check http(s) endpoint: [http://localhost:8080/checkthat/url/https://github.com](http://localhost:8080/checkthat/url/https://github.com)
 - Check open port: [http://localhost:8080/checkthat/url/socket://github.com:80](http://localhost:8080/checkthat/url/socket://github.com:80)
 - Check host by ping: [http://localhost:8080/checkthat/server/github.com](http://localhost:8080/checkthat/server/github.com)
