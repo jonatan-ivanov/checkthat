@@ -34,11 +34,11 @@ run {
 }
 
 task stage {
-  dependsOn installDist
+    dependsOn installDist
 }
 
 task cleanAll {
-    cleanAll.dependsOn clean, cleanIdea, cleanIdeaWorkspace
+    dependsOn clean, cleanIdea, cleanIdeaWorkspace
 }
 cleanAll << {
     delete 'out'
