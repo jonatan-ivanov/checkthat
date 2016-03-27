@@ -21,6 +21,7 @@ class PingChecker implements Function<String, PingResult> {
             pingProcess.waitFor();
 
             return new PingResult(
+                    host: host,
                     exitCode: pingProcess.exitValue(),
                     stdOut: pingProcess.inputStream.text,
                     stdErr: pingProcess.errorStream.text

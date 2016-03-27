@@ -19,7 +19,12 @@ class HttpInvoker {
         try {
             response = httpClient.execute(new HttpGet(url));
             StatusLine status = response.getStatusLine();
-            return new HttpResponse(statusCode: status?.getStatusCode(), statusMessage: status?.getReasonPhrase());
+            return new HttpResponse(
+                    url: url,
+                    method: "GET",
+                    statusCode: status?.getStatusCode(),
+                    statusMessage: status?.getReasonPhrase()
+            );
         }
         finally {
             response?.close();

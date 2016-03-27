@@ -9,6 +9,7 @@ import groovy.transform.ToString
 @ToString(includeNames = true)
 @Immutable
 class PingResult {
+    String host;
     int exitCode;
     String stdOut;
     String stdErr;
