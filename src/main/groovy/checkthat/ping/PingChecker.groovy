@@ -15,7 +15,7 @@ class PingChecker implements Function<String, PingResult> {
 
     @Override
     PingResult apply(String host) {
-        LOGGER.info("Pinging server: $host");
+        LOGGER.info("Pinging $host");
         if (seemsValidHost(host)) {
             Process pingProcess = createCommand(System.getProperty("os.name"), host).execute();
             pingProcess.waitFor();

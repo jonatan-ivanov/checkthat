@@ -11,8 +11,12 @@ import java.util.function.BiFunction
  */
 @Component
 class SocketChecker implements BiFunction<String, Integer, SocketResponse> {
+    private static final Logger LOGGER = LoggerFactory.getLogger(SocketChecker.class);
+
     @Override
     SocketResponse apply(String host, Integer port) {
+        LOGGER.info("Connecting to $host:$port");
+
         Socket socket = null;
         try {
             socket = new Socket(host, port);
