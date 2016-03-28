@@ -5,7 +5,7 @@ Collection of checkers to test servers/services/etc. through Web API packed in a
 * JDK 8
 
 #How to build it
-`gradlew build`
+`./gradlew build`
 
 #How to use it
 ##Run with gradle
@@ -13,7 +13,7 @@ Collection of checkers to test servers/services/etc. through Web API packed in a
 2. Open your browser: [Check Examples](#local-demo)
 
 ##Build and run it
-1. Build: `gradlew installDist`
+1. Build: `./gradlew installDist`
 2. Navigate into app dir: `cd build/install/checkthat`
 3. Start: `bin/checkthat`
 4. Open your browser: [Check Examples](#local-demo)
