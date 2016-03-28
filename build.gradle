@@ -33,8 +33,13 @@ run {
     systemProperties = System.properties
 }
 
+task generateProcfile << {
+    File procfile = file('Procfile')
+    procfile.text = "web: java -Dserver.port=\$PORT -jar ${relativePath(jar.archivePath)}"
+}
+
 task stage {
-    dependsOn installDist
+    dependsOn assemble, installDist, generateProcfile
 }
 
 task cleanAll {
