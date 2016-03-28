@@ -1,5 +1,5 @@
 #What's this?
-Collection of checkers to test servers/services/etc. through Web API packed in a standalone jar. [Check Examples](#examples)
+Collection of checkers to test servers/services/etc. through Web API packed in a standalone jar. [Check Examples](#online-demo)
 
 #Requirements
 * JDK 8
@@ -10,20 +10,28 @@ Collection of checkers to test servers/services/etc. through Web API packed in a
 #How to use it
 ##Run with gradle
 1. Build and start: `./gradlew bootRun`
-2. Open your browser: [Check Examples](#examples)
+2. Open your browser: [Check Examples](#local-demo)
 
 ##Build and run it
 1. Build: `gradlew installDist`
 2. Navigate into app dir: `cd build/install/checkthat`
 3. Start: `bin/checkthat`
-4. Open your browser: [Check Examples](#examples)
+4. Open your browser: [Check Examples](#local-demo)
 
 #Examples
+##Online demo
+- Check http(s) endpoint: [https://checkthat.herokuapp.com/checkthat/url/https://github.com](https://checkthat.herokuapp.com/checkthat/url/https://github.com)
+- Check open port: [https://checkthat.herokuapp.com/checkthat/url/socket://github.com:80](https://checkthat.herokuapp.com/checkthat/url/socket://github.com:80)
+- Check host by ping: [https://checkthat.herokuapp.com/checkthat/server/github.com](https://checkthat.herokuapp.com/checkthat/server/github.com)
+- Check open ports (only one port): [https://checkthat.herokuapp.com/checkthat/socket/github.com:80](https://checkthat.herokuapp.com/checkthat/socket/github.com:80)
+- Check open ports (multiple ports): [https://checkthat.herokuapp.com/checkthat/socket/github.com:80..82](https://checkthat.herokuapp.com/checkthat/sockets/github.com:80..82)
+
+##Local demo
 - Check http(s) endpoint: [http://localhost:8080/checkthat/url/https://github.com](http://localhost:8080/checkthat/url/https://github.com)
 - Check open port: [http://localhost:8080/checkthat/url/socket://github.com:80](http://localhost:8080/checkthat/url/socket://github.com:80)
 - Check host by ping: [http://localhost:8080/checkthat/server/github.com](http://localhost:8080/checkthat/server/github.com)
 - Check open ports (only one port): [http://localhost:8080/checkthat/socket/github.com:80](http://localhost:8080/checkthat/socket/github.com:80)
-- Check open ports (multiple ports): [http://localhost:8080/checkthat/socket/github.com:80..82](http://localhost:8080/checkthat/socket/github.com:80..82)
+- Check open ports (multiple ports): [http://localhost:8080/checkthat/sockets/github.com:80..82](http://localhost:8080/checkthat/socket/github.com:80..82)
 
 ##Specify port
 ```
