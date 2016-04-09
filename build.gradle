@@ -47,6 +47,7 @@ task cleanAll {
 }
 cleanAll << {
     delete 'out'
+    delete fileTree('.').include('*.log')
 }
 
 task wrapper(type: Wrapper) {
