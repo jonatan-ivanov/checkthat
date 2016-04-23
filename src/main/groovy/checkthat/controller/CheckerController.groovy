@@ -53,7 +53,7 @@ class CheckerController {
 
     @ExceptionHandler(Throwable.class)
     @ResponseBody ErrorDetails handleError(Throwable error) {
-        LOGGER.error(error.getMessage(), error);
+        LOGGER.error(error?.getMessage(), error);
         Throwable cause = error?.cause;
         Throwable rootCause = ExceptionUtils.getRootCause(error);
 

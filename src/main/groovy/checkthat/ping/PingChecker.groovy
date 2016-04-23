@@ -12,12 +12,14 @@ import java.util.function.Function
 @Component
 class PingChecker implements Function<String, PingResult> {
     private static final Logger LOGGER = LoggerFactory.getLogger(PingChecker.class);
+    private static final String OS_NAME = System.getProperty("os.name");
+
 
     @Override
     PingResult apply(String host) {
         LOGGER.info("Pinging $host");
         if (seemsValidHost(host)) {
-            Process pingProcess = createCommand(System.getProperty("os.name"), host).execute();
+            Process pingProcess = createCommand(OS_NAME, host).execute();
             pingProcess.waitFor();
 
             return new PingResult(
