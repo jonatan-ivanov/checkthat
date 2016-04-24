@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody
 import java.util.function.BiFunction
 import java.util.function.Function
 
+import static org.springframework.web.bind.annotation.RequestMethod.GET
 /**
  * @author Jonatan Ivanov
  */
@@ -31,22 +32,22 @@ class CheckerController {
     @Autowired private BiFunction<String, Integer, SocketResponse> socketChecker;
     @Autowired private BiFunction<String, Range<Integer>, List<SocketResponse>> multiSocketChecker;
 
-    @RequestMapping(path = "/url")
+    @RequestMapping(path = "/url", method = GET)
     @ResponseBody UrlResponse checkUrl(@RequestParam String url) {
         return urlChecker.apply(url);
     }
 
-    @RequestMapping(path = "/server/{server:.+}")
+    @RequestMapping(path = "/server/{server:.+}", method = GET)
     @ResponseBody PingResult checkServer(@PathVariable String server) {
         return pingChecker.apply(server);
     }
 
-    @RequestMapping(path = "/socket/{host}:{port:.+}")
+    @RequestMapping(path = "/socket/{host}:{port:.+}", method = GET)
     @ResponseBody SocketResponse checkPort(@PathVariable String host, @PathVariable Integer port) {
         return socketChecker.apply(host, port);
     }
 
-    @RequestMapping(path = "/sockets/{host}:{portRange:.+}")
+    @RequestMapping(path = "/sockets/{host}:{portRange:.+}", method = GET)
     @ResponseBody List<SocketResponse> checkPorts(@PathVariable String host, @PathVariable String portRange) {
         return multiSocketChecker.apply(host, PortRangeFactory.createRange(portRange));
     }
