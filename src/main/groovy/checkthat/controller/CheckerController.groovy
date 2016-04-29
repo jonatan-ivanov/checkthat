@@ -13,13 +13,13 @@ import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseBody
 
 import java.util.function.BiFunction
 import java.util.function.Function
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET
+
 /**
  * @author Jonatan Ivanov
  */
@@ -32,9 +32,12 @@ class CheckerController {
     @Autowired private BiFunction<String, Integer, SocketResponse> socketChecker;
     @Autowired private BiFunction<String, Range<Integer>, List<SocketResponse>> multiSocketChecker;
 
-    @RequestMapping(path = "/url", method = GET)
-    @ResponseBody UrlResponse checkUrl(@RequestParam String url) {
-        return urlChecker.apply(url);
+    @RequestMapping(path = "/url/{url:.+}", method = GET)
+    @ResponseBody UrlResponse checkUrl(@PathVariable String url) {
+        String encodedUrl = url.minus("base64:");
+        String base64DecodedUrl = new String(Base64.getUrlDecoder().decode(encodedUrl));
+
+        return urlChecker.apply(URLDecoder.decode(base64DecodedUrl, "UTF-8"));
     }
 
     @RequestMapping(path = "/server/{server:.+}", method = GET)

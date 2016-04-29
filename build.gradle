@@ -20,9 +20,8 @@ dependencies {
     compile 'org.codehaus.groovy:groovy'
     compile 'org.apache.httpcomponents:httpclient:4.+'
     compile 'org.apache.commons:commons-lang3:3.+'
-    compile 'org.tuckey:urlrewritefilter:4.+'
-
-    testCompile 'org.springframework.boot:spring-boot-starter-test'
+    compile 'io.springfox:springfox-swagger-ui:2.+'
+    compile 'io.springfox:springfox-swagger2:2.+'
 }
 
 bootRun {
