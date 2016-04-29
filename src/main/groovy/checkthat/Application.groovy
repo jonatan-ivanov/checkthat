@@ -2,7 +2,6 @@ package checkthat
 
 import checkthat.filter.Base64UrlEncodingFilter
 import checkthat.url.http.AlwaysTrustStrategy
-import com.google.common.base.Predicates
 import org.apache.http.client.config.RequestConfig
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory
 import org.apache.http.impl.client.CloseableHttpClient
@@ -23,6 +22,9 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2
 
 import javax.net.ssl.SSLContext
 import javax.servlet.DispatcherType
+
+import static com.google.common.base.Predicates.not
+import static com.google.common.base.Predicates.or
 
 /**
  * @author Jonatan Ivanov
@@ -72,17 +74,32 @@ class Application {
     }
 
     @Bean
-    public Docket newsApi() {
+    public Docket checkthatApi() {
         return new Docket(DocumentationType.SPRING_WEB)
                 .groupName("checkthat")
-                .apiInfo(getApiInfo())
-                .select().paths(Predicates.not(PathSelectors.regex("/error")))
+                .apiInfo(getCheckthatApiInfo())
+                .select().paths(not(or(PathSelectors.regex("/error"), PathSelectors.regex("/manage/.*"))))
                 .build();
     }
 
-    private static ApiInfo getApiInfo() {
+    private static ApiInfo getCheckthatApiInfo() {
         return new ApiInfoBuilder()
-                .title("Checkthat REST API Doc")
+                .title("Checkthat REST API")
+                .build();
+    }
+
+    @Bean
+    public Docket actuatorApi() {
+        return new Docket(DocumentationType.SPRING_WEB)
+                .groupName("actuator")
+                .apiInfo(getActuatorApiInfo())
+                .select().paths(PathSelectors.regex("/manage/.*"))
+                .build();
+    }
+
+    private static ApiInfo getActuatorApiInfo() {
+        return new ApiInfoBuilder()
+                .title("Actuator REST API")
                 .build();
     }
 }
