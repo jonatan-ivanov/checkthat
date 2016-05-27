@@ -10,7 +10,7 @@ jar {
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
-mainClassName = "checkthat.Application"
+mainClassName = 'checkthat.Application'
 
 repositories {
     mavenCentral()
