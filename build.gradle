@@ -3,8 +3,10 @@ apply plugin: 'spring-boot'
 apply plugin: 'application'
 apply plugin: 'idea'
 
+ext.projectName = 'checkthat'
+
 jar {
-    baseName = 'checkthat'
+    baseName = projectName
     version = '0.0.1-SNAPSHOT'
 }
 
@@ -39,7 +41,26 @@ task generateProcfile << {
 }
 
 task stage {
-    dependsOn assemble, installDist, generateProcfile
+    dependsOn clean, assemble, installDist, generateProcfile
+}
+
+task dockerBuild << {
+    executeAndWaitFor("docker build -t ${projectName} .")
+}
+dockerBuild.dependsOn clean, assemble
+
+task dockerRun << {
+    execute("docker run -p 8080:8080 ${projectName}")
+}
+dockerRun.dependsOn dockerBuild
+
+private executeAndWaitFor(def cmd) {
+    execute(cmd).waitFor()
+}
+
+private def execute(def cmd) {
+    println "\t$cmd"
+    cmd.execute()
 }
 
 task cleanAll {
