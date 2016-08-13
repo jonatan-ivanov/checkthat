@@ -48,3 +48,8 @@ or
 create dist: `./gradlew installDist`  
 unpack `.tar` or `.zip` from `build/distributions` to your target dir  
 run: `bin/checkthat`
+
+#Docker
+`./gradlew dockerBuild`
+
+`./gradlew dockerRun`
