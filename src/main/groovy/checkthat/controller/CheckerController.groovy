@@ -34,7 +34,7 @@ class CheckerController {
 
     @RequestMapping(path = "/url/{url:.+}", method = GET)
     @ResponseBody UrlResponse checkUrl(@PathVariable String url) {
-        String encodedUrl = url.minus("base64:");
+        String encodedUrl = url.minus("base64");
         String base64DecodedUrl = new String(Base64.getUrlDecoder().decode(encodedUrl));
 
         return urlChecker.apply(URLDecoder.decode(base64DecodedUrl, "UTF-8"));

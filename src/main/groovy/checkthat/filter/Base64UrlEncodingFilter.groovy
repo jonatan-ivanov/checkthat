@@ -32,9 +32,9 @@ class Base64UrlEncodingFilter implements Filter {
 
         if (matcher.find()) {
             String plainText = matcher.group(1);
-            if (!plainText.startsWith("base64:")) {
+            if (!plainText.startsWith("base64")) {
                 String encoded = Base64.getUrlEncoder().encodeToString(plainText.getBytes());
-                httpRequest.getRequestDispatcher("$path/base64:$encoded").forward(request, response);
+                httpRequest.getRequestDispatcher("$path/base64$encoded").forward(request, response);
             }
             else {
                 chain.doFilter(request, response);
