@@ -44,15 +44,13 @@ task stage {
     dependsOn assemble, installDist, generateProcfile
 }
 
-task dockerBuild << {
+task dockerBuild(dependsOn: assemble) << {
     executeAndWaitFor("docker build -t ${projectName} .")
 }
-dockerBuild.dependsOn clean, assemble
 
-task dockerRun << {
+task dockerRun(dependsOn: dockerBuild) << {
     execute("docker run -p 8080:8080 ${projectName}")
 }
-dockerRun.dependsOn dockerBuild
 
 private executeAndWaitFor(def cmd) {
     execute(cmd).waitFor()
