@@ -41,7 +41,7 @@ task generateProcfile << {
 }
 
 task stage {
-    dependsOn clean, assemble, installDist, generateProcfile
+    dependsOn assemble, installDist, generateProcfile
 }
 
 task dockerBuild << {
