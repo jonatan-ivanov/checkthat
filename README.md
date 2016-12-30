@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/jonatan-ivanov/checkthat.svg?branch=master)](https://travis-ci.org/jonatan-ivanov/checkthat)
+
 #What's this?
 Collection of checkers to test servers/services/etc. through Web API packed in a standalone jar. [Check Examples](#online-demo)
 
