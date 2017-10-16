@@ -1,5 +1,5 @@
 apply plugin: 'groovy'
-apply plugin: 'spring-boot'
+apply plugin: 'org.springframework.boot'
 apply plugin: 'application'
 apply plugin: 'idea'
 
@@ -35,21 +35,27 @@ run {
     systemProperties = System.properties
 }
 
-task generateProcfile << {
-    File procfile = file('Procfile')
-    procfile.text = "web: java -Dserver.port=\$PORT -jar ${relativePath(jar.archivePath)}"
+task generateProcfile {
+    doLast {
+        File procfile = file('Procfile')
+        procfile.text = "web: java -Dserver.port=\$PORT -jar ${relativePath(jar.archivePath)}"
+    }
 }
 
 task stage {
     dependsOn assemble, installDist, generateProcfile
 }
 
-task dockerBuild(dependsOn: assemble) << {
-    executeAndWaitFor("docker build -t ${projectName} .")
+task dockerBuild(dependsOn: assemble) {
+    doLast {
+        executeAndWaitFor("docker build -t ${projectName} .")
+    }
 }
 
-task dockerRun(dependsOn: dockerBuild) << {
-    execute("docker run -p 8080:8080 ${projectName}")
+task dockerRun(dependsOn: dockerBuild) {
+    doLast{
+        execute("docker run -p 8080:8080 ${projectName}")
+    }
 }
 
 private executeAndWaitFor(def cmd) {
@@ -64,13 +70,15 @@ private def execute(def cmd) {
 task cleanAll {
     dependsOn clean, cleanIdea, cleanIdeaWorkspace
 }
-cleanAll << {
-    delete 'out'
-    delete fileTree('.').include('*.log')
+cleanAll {
+    doLast {
+        delete 'out'
+        delete fileTree('.').include('*.log')
+    }
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '3.2.1'
+    gradleVersion = '4.2.1'
 }
 
 buildscript {
