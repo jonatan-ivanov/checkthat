@@ -78,7 +78,10 @@ cleanAll {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '4.2.1'
+    doFirst {
+        distributionType = Wrapper.DistributionType.ALL
+        gradleVersion = new groovy.json.JsonSlurper().parseText('https://services.gradle.org/versions/current'.toURL().text).version
+    }
 }
 
 buildscript {
