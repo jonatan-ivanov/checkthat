@@ -2,6 +2,7 @@
 build/
 .gradletasknamecache
 
+.idea/
 out/
 *.iml
 *.ipr

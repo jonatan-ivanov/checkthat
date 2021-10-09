@@ -7,30 +7,21 @@ import org.apache.http.conn.ssl.SSLConnectionSocketFactory
 import org.apache.http.impl.client.CloseableHttpClient
 import org.apache.http.impl.client.HttpClients
 import org.apache.http.ssl.SSLContexts
+
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.web.servlet.FilterRegistrationBean
 import org.springframework.context.annotation.Bean
 import org.springframework.core.env.Environment
-import springfox.documentation.builders.ApiInfoBuilder
-import springfox.documentation.builders.PathSelectors
-import springfox.documentation.service.ApiInfo
-import springfox.documentation.spi.DocumentationType
-import springfox.documentation.spring.web.plugins.Docket
-import springfox.documentation.swagger2.annotations.EnableSwagger2
 
 import javax.net.ssl.SSLContext
 import javax.servlet.DispatcherType
-
-import static com.google.common.base.Predicates.not
-import static com.google.common.base.Predicates.or
 
 /**
  * @author Jonatan Ivanov
  */
 @SpringBootApplication
-@EnableSwagger2
 class Application {
     @Autowired private Environment env;
 
@@ -71,35 +62,5 @@ class Application {
         filterRegistrationBean.setDispatcherTypes(DispatcherType.REQUEST, DispatcherType.FORWARD);
 
         return filterRegistrationBean;
-    }
-
-    @Bean
-    public Docket checkthatApi() {
-        return new Docket(DocumentationType.SPRING_WEB)
-                .groupName("checkthat")
-                .apiInfo(getCheckthatApiInfo())
-                .select().paths(not(or(PathSelectors.regex("/error"), PathSelectors.regex("/manage/.*"))))
-                .build();
-    }
-
-    private static ApiInfo getCheckthatApiInfo() {
-        return new ApiInfoBuilder()
-                .title("Checkthat REST API")
-                .build();
-    }
-
-    @Bean
-    public Docket actuatorApi() {
-        return new Docket(DocumentationType.SPRING_WEB)
-                .groupName("actuator")
-                .apiInfo(getActuatorApiInfo())
-                .select().paths(PathSelectors.regex("/manage/.*"))
-                .build();
-    }
-
-    private static ApiInfo getActuatorApiInfo() {
-        return new ApiInfoBuilder()
-                .title("Actuator REST API")
-                .build();
     }
 }
