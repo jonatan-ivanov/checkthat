@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/jonatan-ivanov/checkthat.svg?branch=master)](https://travis-ci.org/jonatan-ivanov/checkthat)
+[![Build Status](https://github.com/jonatan-ivanov/checkthat/actions/workflows/gradle.yml/badge.svg)](https://github.com/jonatan-ivanov/checkthat/actions)
 
 # What's this?
 Collection of checkers to test servers/services/etc. through Web API packed in a standalone jar. [Check Examples](#online-demo)
