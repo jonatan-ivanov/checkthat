@@ -14,8 +14,8 @@ apply plugin: 'org.springframework.boot'
 
 version = '0.0.1-SNAPSHOT'
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
 
 repositories {
 	mavenCentral()
@@ -46,14 +46,11 @@ task bootDockerRun {
 	}
 }
 
-task generateProcfile {
+task stage {
+	dependsOn assemble
 	doLast {
 		file('Procfile').text = "web: java -Dserver.port=\$PORT -jar ${relativePath(bootJar.archiveFile)}"
 	}
-}
-
-task stage {
-	dependsOn assemble, generateProcfile
 }
 
 wrapper {
