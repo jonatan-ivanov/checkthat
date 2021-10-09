@@ -1,5 +1,8 @@
 package checkthat.controller
 
+import java.util.function.BiFunction
+import java.util.function.Function
+
 import checkthat.error.ErrorDetails
 import checkthat.ping.PingResult
 import checkthat.url.UrlResponse
@@ -8,22 +11,19 @@ import checkthat.util.PortRangeFactory
 import org.apache.commons.lang3.exception.ExceptionUtils
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import springfox.documentation.annotations.ApiIgnore
+
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.ExceptionHandler
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.ResponseBody
-
-import java.util.function.BiFunction
-import java.util.function.Function
-
-import static org.springframework.web.bind.annotation.RequestMethod.GET
+import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.servlet.view.RedirectView
 
 /**
  * @author Jonatan Ivanov
  */
-@Controller
+@RestController
 class CheckerController {
     private static final Logger LOGGER = LoggerFactory.getLogger(CheckerController.class);
 
@@ -32,31 +32,37 @@ class CheckerController {
     @Autowired private BiFunction<String, Integer, SocketResponse> socketChecker;
     @Autowired private BiFunction<String, Range<Integer>, List<SocketResponse>> multiSocketChecker;
 
-    @RequestMapping(path = "/url/{url:.+}", method = GET)
-    @ResponseBody UrlResponse checkUrl(@PathVariable String url) {
+    @GetMapping(path = "/url/{url:.+}")
+    UrlResponse checkUrl(@PathVariable String url) {
         String encodedUrl = url.minus("base64");
         String base64DecodedUrl = new String(Base64.getUrlDecoder().decode(encodedUrl));
 
         return urlChecker.apply(URLDecoder.decode(base64DecodedUrl, "UTF-8"));
     }
 
-    @RequestMapping(path = "/server/{server:.+}", method = GET)
-    @ResponseBody PingResult checkServer(@PathVariable String server) {
+    @GetMapping(path = "/server/{server:.+}")
+    PingResult checkServer(@PathVariable String server) {
         return pingChecker.apply(server);
     }
 
-    @RequestMapping(path = "/socket/{host}:{port:.+}", method = GET)
-    @ResponseBody SocketResponse checkPort(@PathVariable String host, @PathVariable Integer port) {
+    @GetMapping(path = "/socket/{host}:{port:.+}")
+    SocketResponse checkPort(@PathVariable String host, @PathVariable Integer port) {
         return socketChecker.apply(host, port);
     }
 
-    @RequestMapping(path = "/sockets/{host}:{portRange:.+}", method = GET)
-    @ResponseBody List<SocketResponse> checkPorts(@PathVariable String host, @PathVariable String portRange) {
+    @GetMapping(path = "/sockets/{host}:{portRange:.+}")
+    List<SocketResponse> checkPorts(@PathVariable String host, @PathVariable String portRange) {
         return multiSocketChecker.apply(host, PortRangeFactory.createRange(portRange));
     }
 
+    @ApiIgnore
+    @GetMapping("/")
+    RedirectView redirectWithUsingRedirectView() {
+        return new RedirectView("/swagger-ui/");
+    }
+
     @ExceptionHandler(Throwable.class)
-    @ResponseBody ErrorDetails handleError(Throwable error) {
+    ErrorDetails handleError(Throwable error) {
         LOGGER.error(error?.getMessage(), error);
         Throwable cause = error?.cause;
         Throwable rootCause = ExceptionUtils.getRootCause(error);
