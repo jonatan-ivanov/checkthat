@@ -10,7 +10,7 @@ import groovy.transform.ToString
 @ToString(includeNames = true)
 @Immutable
 class SocketResponse implements UrlResponse {
-    String host;
-    int port;
-    boolean connected;
+	String host;
+	int port;
+	boolean connected;
 }

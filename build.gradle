@@ -1,12 +1,12 @@
 buildscript {
-    ext.springBootVersion = 'latest.release'
+	ext.springBootVersion = 'latest.release'
 
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
-    }
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
+	}
 }
 
 apply plugin: 'groovy'
@@ -18,46 +18,45 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 repositories {
-    mavenCentral()
+	mavenCentral()
 }
 dependencies {
-    implementation platform("org.springframework.boot:spring-boot-dependencies:$springBootVersion")
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-actuator'
-    implementation 'org.codehaus.groovy:groovy'
-    implementation 'org.apache.httpcomponents:httpclient:4.+'
-    implementation 'org.apache.commons:commons-lang3:3.+'
-    implementation 'io.springfox:springfox-boot-starter:latest.release'
-    implementation 'io.springfox:springfox-swagger-ui:latest.release'
+	implementation platform("org.springframework.boot:spring-boot-dependencies:$springBootVersion")
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.codehaus.groovy:groovy'
+	implementation 'org.apache.httpcomponents:httpclient:4.+'
+	implementation 'org.apache.commons:commons-lang3:3.+'
+	implementation 'io.springfox:springfox-boot-starter:latest.release'
+	implementation 'io.springfox:springfox-swagger-ui:latest.release'
 }
 
 jar {
-    enabled = false
+	enabled = false
 }
 
 bootRun {
-    systemProperties = System.properties
+	systemProperties = System.properties
 }
 
 task bootDockerRun {
-    dependsOn bootBuildImage
-    doLast {
-        "docker run --rm -p 8080:8080 $rootProject.name:$version".execute().waitForProcessOutput(System.out, System.err)
-    }
+	dependsOn bootBuildImage
+	doLast {
+		"docker run --rm -p 8080:8080 $rootProject.name:$version".execute().waitForProcessOutput(System.out, System.err)
+	}
 }
 
 task generateProcfile {
-    doLast {
-        File procfile = file('Procfile')
-        procfile.text = "web: java -Dserver.port=\$PORT -jar ${relativePath(bootJar.archiveFile)}"
-    }
+	doLast {
+		file('Procfile').text = "web: java -Dserver.port=\$PORT -jar ${relativePath(bootJar.archiveFile)}"
+	}
 }
 
 task stage {
-    dependsOn assemble, generateProcfile
+	dependsOn assemble, generateProcfile
 }
 
 wrapper {
-    distributionType = Wrapper.DistributionType.ALL
-    // gradleVersion = new groovy.json.JsonSlurper().parseText('https://services.gradle.org/versions/current'.toURL().text).version
+	distributionType = Wrapper.DistributionType.ALL
+	// gradleVersion = new groovy.json.JsonSlurper().parseText('https://services.gradle.org/versions/current'.toURL().text).version
 }
