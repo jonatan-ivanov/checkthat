@@ -10,15 +10,14 @@ Collection of checkers to test servers/services/etc. through Web API packed in a
 `./gradlew build`
 
 # How to use it
-## Run with gradle
+## Run with Gradle
 1. Build and start: `./gradlew bootRun`
 2. Open your browser: [Check Examples](#local-demo)
 
 ## Build and run it
-1. Build: `./gradlew installDist`
-2. Navigate into app dir: `cd build/install/checkthat`
-3. Start: `bin/checkthat`
-4. Open your browser: [Check Examples](#local-demo)
+1. Build: `./gradlew assemble`
+2. Start: `java -jar build/libs/*.jar`
+3. Open your browser: [Check Examples](#local-demo)
 
 # Examples
 ## Online demo
@@ -38,20 +37,9 @@ Collection of checkers to test servers/services/etc. through Web API packed in a
 ## Specify port
 ```
 ./gradlew bootRun -Dport=9000
-bin/checkthat --port=9000
+java -Dport=9000 -jar build/libs/*.jar
 ```
 
-# Deploy
-create dist: `./gradlew installDist`  
-run: `./build/install/checkthat/bin/checkthat`
-
-or
-
-create dist: `./gradlew installDist`  
-unpack `.tar` or `.zip` from `build/distributions` to your target dir  
-run: `bin/checkthat`
-
 # Docker
-`./gradlew dockerBuild`
-
-`./gradlew dockerRun`
+- Build image: `./gradlew bootBuildImage`
+- Build image and run: `./gradlew bootDockerRun`
