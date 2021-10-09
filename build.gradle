@@ -39,6 +39,13 @@ bootRun {
     systemProperties = System.properties
 }
 
+task bootDockerRun {
+    dependsOn bootBuildImage
+    doLast {
+        "docker run --rm -p 8080:8080 $rootProject.name:$version".execute().waitForProcessOutput(System.out, System.err)
+    }
+}
+
 task generateProcfile {
     doLast {
         File procfile = file('Procfile')
