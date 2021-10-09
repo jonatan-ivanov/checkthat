@@ -1,94 +1,56 @@
+buildscript {
+    ext.springBootVersion = 'latest.release'
+
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
+    }
+}
+
 apply plugin: 'groovy'
 apply plugin: 'org.springframework.boot'
-apply plugin: 'application'
-apply plugin: 'idea'
 
-ext.projectName = 'checkthat'
-
-jar {
-    baseName = projectName
-    version = '0.0.1-SNAPSHOT'
-}
+version = '0.0.1-SNAPSHOT'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
-mainClassName = 'checkthat.Application'
 
 repositories {
     mavenCentral()
 }
 dependencies {
-    compile 'org.springframework.boot:spring-boot-starter-web'
-    compile 'org.springframework.boot:spring-boot-starter-actuator'
-    compile 'org.codehaus.groovy:groovy'
-    compile 'org.apache.httpcomponents:httpclient:4.+'
-    compile 'org.apache.commons:commons-lang3:3.+'
-    compile 'io.springfox:springfox-swagger-ui:2.+'
-    compile 'io.springfox:springfox-swagger2:2.+'
+    implementation platform("org.springframework.boot:spring-boot-dependencies:$springBootVersion")
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.codehaus.groovy:groovy'
+    implementation 'org.apache.httpcomponents:httpclient:4.+'
+    implementation 'org.apache.commons:commons-lang3:3.+'
+    implementation 'io.springfox:springfox-boot-starter:latest.release'
+    implementation 'io.springfox:springfox-swagger-ui:latest.release'
+}
+
+jar {
+    enabled = false
 }
 
 bootRun {
     systemProperties = System.properties
 }
 
-run {
-    systemProperties = System.properties
-}
-
 task generateProcfile {
     doLast {
         File procfile = file('Procfile')
-        procfile.text = "web: java -Dserver.port=\$PORT -jar ${relativePath(jar.archivePath)}"
+        procfile.text = "web: java -Dserver.port=\$PORT -jar ${relativePath(bootJar.archiveFile)}"
     }
 }
 
 task stage {
-    dependsOn assemble, installDist, generateProcfile
+    dependsOn assemble, generateProcfile
 }
 
-task dockerBuild(dependsOn: assemble) {
-    doLast {
-        executeAndWaitFor("docker build -t ${projectName} .")
-    }
-}
-
-task dockerRun(dependsOn: dockerBuild) {
-    doLast{
-        execute("docker run -p 8080:8080 ${projectName}")
-    }
-}
-
-private executeAndWaitFor(def cmd) {
-    execute(cmd).waitFor()
-}
-
-private def execute(def cmd) {
-    println "\t$cmd"
-    cmd.execute()
-}
-
-task cleanAll {
-    dependsOn clean, cleanIdea, cleanIdeaWorkspace
-}
-cleanAll {
-    doLast {
-        delete 'out'
-        delete fileTree('.').include('*.log')
-    }
-}
-
-task wrapper(type: Wrapper) {
-    doFirst {
-        distributionType = Wrapper.DistributionType.ALL
-        gradleVersion = new groovy.json.JsonSlurper().parseText('https://services.gradle.org/versions/current'.toURL().text).version
-    }
-}
-
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath('org.springframework.boot:spring-boot-gradle-plugin:1.+')
-    }
+wrapper {
+    distributionType = Wrapper.DistributionType.ALL
+    // gradleVersion = new groovy.json.JsonSlurper().parseText('https://services.gradle.org/versions/current'.toURL().text).version
 }
