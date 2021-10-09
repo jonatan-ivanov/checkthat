@@ -7,6 +7,9 @@ buildscript {
 	dependencies {
 		classpath "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
 	}
+	configurations.classpath {
+		resolutionStrategy.activateDependencyLocking()
+	}
 }
 
 apply plugin: 'groovy'
@@ -29,6 +32,20 @@ dependencies {
 	implementation 'org.apache.commons:commons-lang3:3.+'
 	implementation 'io.springfox:springfox-boot-starter:latest.release'
 	implementation 'io.springfox:springfox-swagger-ui:latest.release'
+}
+
+dependencyLocking {
+	lockAllConfigurations()
+}
+
+task resolveAndLockAll { // ./gradlew resolveAndLockAll --write-locks
+	description = 'Resolves dependencies of all configurations and writes them into the lock file.'
+	doFirst {
+		assert gradle.startParameter.writeDependencyLocks : 'Execute resolveAndLockAll --write-locks'
+	}
+	doLast {
+		configurations.findAll { it.canBeResolved }.each { it.resolve() }
+	}
 }
 
 jar {
