@@ -4,7 +4,7 @@
 Collection of checkers to test servers/services/etc. through Web API packed in a standalone jar. [Check Examples](#online-demo)
 
 # Requirements
-* JDK 8
+* JDK 17
 
 # How to build it
 `./gradlew build`
