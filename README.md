@@ -23,7 +23,7 @@ Collection of checkers to test servers/services/etc. through Web API packed in a
 ## Online demo
 - Check http(s) endpoint: [https://checkthat.herokuapp.com/url/https://github.com](https://checkthat.herokuapp.com/url/https://github.com)
 - Check open port: [https://checkthat.herokuapp.com/url/socket://github.com:80](https://checkthat.herokuapp.com/url/socket://github.com:80)
-- Check host by ping: [https://checkthat.herokuapp.com/server/github.com](https://checkthat.herokuapp.com/checkthat/server/github.com)
+- Check host by ping: [https://checkthat.herokuapp.com/server/github.com](https://checkthat.herokuapp.com/server/github.com)
 - Check open ports (only one port): [https://checkthat.herokuapp.com/socket/github.com:80](https://checkthat.herokuapp.com/socket/github.com:80)
 - Check open ports (multiple ports): [https://checkthat.herokuapp.com/sockets/github.com:80..82](https://checkthat.herokuapp.com/sockets/github.com:80..82)
 
