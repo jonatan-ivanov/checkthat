@@ -25,55 +25,55 @@ import org.springframework.web.servlet.view.RedirectView
  */
 @RestController
 class CheckerController {
-    private static final Logger LOGGER = LoggerFactory.getLogger(CheckerController.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(CheckerController.class);
 
-    @Autowired private Function<String, UrlResponse> urlChecker;
-    @Autowired private Function<String, PingResult> pingChecker;
-    @Autowired private BiFunction<String, Integer, SocketResponse> socketChecker;
-    @Autowired private BiFunction<String, Range<Integer>, List<SocketResponse>> multiSocketChecker;
+	@Autowired private Function<String, UrlResponse> urlChecker;
+	@Autowired private Function<String, PingResult> pingChecker;
+	@Autowired private BiFunction<String, Integer, SocketResponse> socketChecker;
+	@Autowired private BiFunction<String, Range<Integer>, List<SocketResponse>> multiSocketChecker;
 
-    @GetMapping(path = "/url/{url:.+}")
-    UrlResponse checkUrl(@PathVariable String url) {
-        String encodedUrl = url.minus("base64");
-        String base64DecodedUrl = new String(Base64.getUrlDecoder().decode(encodedUrl));
+	@GetMapping(path = "/url/{url:.+}")
+	UrlResponse checkUrl(@PathVariable String url) {
+		String encodedUrl = url.minus("base64");
+		String base64DecodedUrl = new String(Base64.getUrlDecoder().decode(encodedUrl));
 
-        return urlChecker.apply(URLDecoder.decode(base64DecodedUrl, "UTF-8"));
-    }
+		return urlChecker.apply(URLDecoder.decode(base64DecodedUrl, "UTF-8"));
+	}
 
-    @GetMapping(path = "/server/{server:.+}")
-    PingResult checkServer(@PathVariable String server) {
-        return pingChecker.apply(server);
-    }
+	@GetMapping(path = "/server/{server:.+}")
+	PingResult checkServer(@PathVariable String server) {
+		return pingChecker.apply(server);
+	}
 
-    @GetMapping(path = "/socket/{host}:{port:.+}")
-    SocketResponse checkPort(@PathVariable String host, @PathVariable Integer port) {
-        return socketChecker.apply(host, port);
-    }
+	@GetMapping(path = "/socket/{host}:{port:.+}")
+	SocketResponse checkPort(@PathVariable String host, @PathVariable Integer port) {
+		return socketChecker.apply(host, port);
+	}
 
-    @GetMapping(path = "/sockets/{host}:{portRange:.+}")
-    List<SocketResponse> checkPorts(@PathVariable String host, @PathVariable String portRange) {
-        return multiSocketChecker.apply(host, PortRangeFactory.createRange(portRange));
-    }
+	@GetMapping(path = "/sockets/{host}:{portRange:.+}")
+	List<SocketResponse> checkPorts(@PathVariable String host, @PathVariable String portRange) {
+		return multiSocketChecker.apply(host, PortRangeFactory.createRange(portRange));
+	}
 
-    @ApiIgnore
-    @GetMapping("/")
-    RedirectView redirectWithUsingRedirectView() {
-        return new RedirectView("/swagger-ui/");
-    }
+	@ApiIgnore
+	@GetMapping("/")
+	RedirectView redirectWithUsingRedirectView() {
+		return new RedirectView("/swagger-ui/");
+	}
 
-    @ExceptionHandler(Throwable.class)
-    ErrorDetails handleError(Throwable error) {
-        LOGGER.error(error?.getMessage(), error);
-        Throwable cause = error?.cause;
-        Throwable rootCause = ExceptionUtils.getRootCause(error);
+	@ExceptionHandler(Throwable.class)
+	ErrorDetails handleError(Throwable error) {
+		LOGGER.error(error?.getMessage(), error);
+		Throwable cause = error?.cause;
+		Throwable rootCause = ExceptionUtils.getRootCause(error);
 
-        return new ErrorDetails(
-                errorMessage: error?.getMessage(),
-                errorClass: error?.getClass(),
-                causeClass: cause?.getClass(),
-                causeMessage: cause?.getMessage(),
-                rootCauseMessage: rootCause?.getMessage(),
-                rootCauseClass: rootCause?.getClass()
-        );
-    }
+		return new ErrorDetails(
+				errorMessage: error?.getMessage(),
+				errorClass: error?.getClass(),
+				causeClass: cause?.getClass(),
+				causeMessage: cause?.getMessage(),
+				rootCauseMessage: rootCause?.getMessage(),
+				rootCauseClass: rootCause?.getClass()
+		);
+	}
 }

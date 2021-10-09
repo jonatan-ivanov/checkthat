@@ -10,8 +10,8 @@ import groovy.transform.ToString
 @ToString(includeNames = true)
 @Immutable
 class HttpResponse implements UrlResponse {
-    String url;
-    String method;
-    int statusCode;
-    String statusMessage;
+	String url;
+	String method;
+	int statusCode;
+	String statusMessage;
 }

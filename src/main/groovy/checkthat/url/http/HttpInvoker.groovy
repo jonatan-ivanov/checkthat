@@ -7,6 +7,7 @@ import org.apache.http.client.methods.HttpGet
 import org.apache.http.impl.client.CloseableHttpClient
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
@@ -15,30 +16,30 @@ import org.springframework.stereotype.Component
  */
 @Component
 class HttpInvoker {
-    private static final Logger LOGGER = LoggerFactory.getLogger(HttpInvoker.class);
-    @Autowired private CloseableHttpClient httpClient;
+	private static final Logger LOGGER = LoggerFactory.getLogger(HttpInvoker.class);
+	@Autowired private CloseableHttpClient httpClient;
 
-    HttpResponse invoke(String url) {
-        LOGGER.info("Invoking $url");
+	HttpResponse invoke(String url) {
+		LOGGER.info("Invoking $url");
 
-        CloseableHttpResponse response = null;
-        try {
-            response = httpClient.execute(new HttpGet(url));
-            StatusLine status = response.getStatusLine();
-            LOGGER.info("Successfully invoked $url");
+		CloseableHttpResponse response = null;
+		try {
+			response = httpClient.execute(new HttpGet(url));
+			StatusLine status = response.getStatusLine();
+			LOGGER.info("Successfully invoked $url");
 
-            return new HttpResponse(
-                    url: url,
-                    method: "GET",
-                    statusCode: status?.getStatusCode(),
-                    statusMessage: status?.getReasonPhrase()
-            );
-        }
-        catch (Exception e) {
-            throw new CheckerException("Error occured while invoking $url", e);
-        }
-        finally {
-            response?.close();
-        }
-    }
+			return new HttpResponse(
+					url: url,
+					method: "GET",
+					statusCode: status?.getStatusCode(),
+					statusMessage: status?.getReasonPhrase()
+			);
+		}
+		catch (Exception e) {
+			throw new CheckerException("Error occured while invoking $url", e);
+		}
+		finally {
+			response?.close();
+		}
+	}
 }

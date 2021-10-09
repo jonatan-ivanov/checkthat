@@ -1,5 +1,8 @@
 package checkthat
 
+import javax.net.ssl.SSLContext
+import javax.servlet.DispatcherType
+
 import checkthat.filter.Base64UrlEncodingFilter
 import checkthat.url.http.AlwaysTrustStrategy
 import org.apache.http.client.config.RequestConfig
@@ -15,52 +18,49 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean
 import org.springframework.context.annotation.Bean
 import org.springframework.core.env.Environment
 
-import javax.net.ssl.SSLContext
-import javax.servlet.DispatcherType
-
 /**
  * @author Jonatan Ivanov
  */
 @SpringBootApplication
 class Application {
-    @Autowired private Environment env;
+	@Autowired private Environment env;
 
-    static void main(String[] args) {
-        System.setProperty("org.apache.tomcat.util.buf.UDecoder.ALLOW_ENCODED_SLASH", "true");
-        SpringApplication.run(Application, args);
-    }
+	static void main(String[] args) {
+		System.setProperty("org.apache.tomcat.util.buf.UDecoder.ALLOW_ENCODED_SLASH", "true");
+		SpringApplication.run(Application, args);
+	}
 
-    @Bean
-    CloseableHttpClient httpClient() {
-        return HttpClients.custom()
-                .setDefaultRequestConfig(createRequestConfig())
-                .setSSLSocketFactory(createSSLConnectionSocketFactory())
-                .build();
-    }
+	@Bean
+	CloseableHttpClient httpClient() {
+		return HttpClients.custom()
+				.setDefaultRequestConfig(createRequestConfig())
+				.setSSLSocketFactory(createSSLConnectionSocketFactory())
+				.build();
+	}
 
-    private RequestConfig createRequestConfig() {
-        return RequestConfig.custom()
-                .setSocketTimeout(env.getProperty("http.socketTimeout", Integer.class))
-                .setConnectTimeout(env.getProperty("http.connectTimeout", Integer.class))
-                .setConnectionRequestTimeout(env.getProperty("http.connectionRequestTimeout", Integer.class))
-                .build();
-    }
+	private RequestConfig createRequestConfig() {
+		return RequestConfig.custom()
+				.setSocketTimeout(env.getProperty("http.socketTimeout", Integer.class))
+				.setConnectTimeout(env.getProperty("http.connectTimeout", Integer.class))
+				.setConnectionRequestTimeout(env.getProperty("http.connectionRequestTimeout", Integer.class))
+				.build();
+	}
 
-    private static SSLConnectionSocketFactory createSSLConnectionSocketFactory() {
-        SSLContext sslContext = SSLContexts.custom()
-                .loadTrustMaterial(null, new AlwaysTrustStrategy())
-                .build();
+	private static SSLConnectionSocketFactory createSSLConnectionSocketFactory() {
+		SSLContext sslContext = SSLContexts.custom()
+				.loadTrustMaterial(null, new AlwaysTrustStrategy())
+				.build();
 
-        return new SSLConnectionSocketFactory(sslContext, SSLConnectionSocketFactory.getDefaultHostnameVerifier());
-    }
+		return new SSLConnectionSocketFactory(sslContext, SSLConnectionSocketFactory.getDefaultHostnameVerifier());
+	}
 
-    @Bean
-    public FilterRegistrationBean filterRegistrationBean() {
-        FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
-        filterRegistrationBean.setFilter(new Base64UrlEncodingFilter("/url"));
-        filterRegistrationBean.addUrlPatterns("/url/*");
-        filterRegistrationBean.setDispatcherTypes(DispatcherType.REQUEST, DispatcherType.FORWARD);
+	@Bean
+	FilterRegistrationBean filterRegistrationBean() {
+		FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
+		filterRegistrationBean.setFilter(new Base64UrlEncodingFilter("/url"));
+		filterRegistrationBean.addUrlPatterns("/url/*");
+		filterRegistrationBean.setDispatcherTypes(DispatcherType.REQUEST, DispatcherType.FORWARD);
 
-        return filterRegistrationBean;
-    }
+		return filterRegistrationBean;
+	}
 }
