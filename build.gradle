@@ -28,8 +28,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.codehaus.groovy:groovy'
-	implementation 'org.apache.httpcomponents:httpclient:4.+'
-	implementation 'org.apache.commons:commons-lang3:3.+'
+	implementation 'org.apache.httpcomponents:httpclient:latest.release'
+	implementation 'org.apache.commons:commons-lang3:latest.release'
 	implementation 'org.springdoc:springdoc-openapi-ui:latest.release'
 	implementation 'org.springdoc:springdoc-openapi-groovy:latest.release'
 }
