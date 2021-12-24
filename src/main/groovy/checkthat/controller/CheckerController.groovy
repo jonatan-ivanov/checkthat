@@ -8,10 +8,10 @@ import checkthat.ping.PingResult
 import checkthat.url.UrlResponse
 import checkthat.url.socket.SocketResponse
 import checkthat.util.PortRangeFactory
+import io.swagger.v3.oas.annotations.Hidden
 import org.apache.commons.lang3.exception.ExceptionUtils
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import springfox.documentation.annotations.ApiIgnore
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.ExceptionHandler
@@ -55,10 +55,10 @@ class CheckerController {
 		return multiSocketChecker.apply(host, PortRangeFactory.createRange(portRange));
 	}
 
-	@ApiIgnore
+	@Hidden
 	@GetMapping("/")
 	RedirectView redirectWithUsingRedirectView() {
-		return new RedirectView("/swagger-ui/");
+		return new RedirectView("/swagger-ui.html");
 	}
 
 	@ExceptionHandler(Throwable.class)
