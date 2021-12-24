@@ -71,6 +71,6 @@ task stage {
 }
 
 wrapper {
-	distributionType = Wrapper.DistributionType.ALL
+	distributionType = Wrapper.DistributionType.BIN
 	// gradleVersion = new groovy.json.JsonSlurper().parseText('https://services.gradle.org/versions/current'.toURL().text).version
 }
