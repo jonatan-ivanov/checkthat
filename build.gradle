@@ -2,10 +2,12 @@ buildscript {
 	ext.springBootVersion = 'latest.release'
 
 	repositories {
-		mavenCentral()
+		gradlePluginPortal()
 	}
 	dependencies {
 		classpath "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
+		classpath 'com.gorylenko.gradle-git-properties:gradle-git-properties:latest.release'
+		classpath 'org.ajoberstar.grgit:grgit-gradle:latest.release'
 	}
 	configurations.classpath {
 		resolutionStrategy.activateDependencyLocking()
@@ -14,8 +16,10 @@ buildscript {
 
 apply plugin: 'groovy'
 apply plugin: 'org.springframework.boot'
+apply plugin: 'com.gorylenko.gradle-git-properties'
+apply plugin: 'org.ajoberstar.grgit'
 
-version = '0.0.1-SNAPSHOT'
+version = grgit ? "${grgit.head().abbreviatedId}.${Instant.now().epochSecond}" : (System.env.SOURCE_VERSION ?: '0.0.0-UNKNOWN')
 
 sourceCompatibility = JavaVersion.VERSION_18
 targetCompatibility = JavaVersion.VERSION_18
@@ -49,6 +53,21 @@ task resolveAndLockAll { // ./gradlew resolveAndLockAll --write-locks
 	}
 }
 
+// Hack: Heroku removes the .git folder so gradle-git-properties fails, this task fakes the git.properties file
+task generateGitPropertiesForHeroku(type: WriteProperties) {
+	outputFile file("$buildDir/git.properties")
+	properties([
+			'git.branch': 'N/A',
+			'git.commit.id.abbrev': System.env.SOURCE_VERSION ?: 'N/A',
+			'git.commit.time': 'N/A'
+	])
+}
+
+processResources {
+	filesMatching('build.properties') { it.expand(project.properties) }
+	from(generateGitPropertiesForHeroku)
+}
+
 jar {
 	enabled = false
 }
@@ -69,6 +88,20 @@ task stage {
 	doLast {
 		file('Procfile').text = "web: java -Dserver.port=\$PORT -jar ${relativePath(bootJar.archiveFile)}"
 	}
+}
+
+// Hack, see: generateGitPropertiesForHeroku task
+gradle.taskGraph.whenReady { graph ->
+	if (graph.hasTask(stage)) {
+		generateGitProperties.enabled = false
+	}
+	else {
+		generateGitPropertiesForHeroku.enabled = false
+	}
+}
+
+springBoot {
+	buildInfo()
 }
 
 wrapper {

@@ -16,12 +16,14 @@ import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.web.servlet.FilterRegistrationBean
 import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.PropertySource
 import org.springframework.core.env.Environment
 
 /**
  * @author Jonatan Ivanov
  */
 @SpringBootApplication
+@PropertySource("classpath:build.properties")
 class Application {
 	@Autowired private Environment env;
 
